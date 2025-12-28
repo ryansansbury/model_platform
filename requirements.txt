@@ -1,0 +1,13 @@
+# Multi-Model AI Platform - Dependencies
+
+# Web framework
+flask>=3.0.0
+flask-cors>=4.0.0
+flask-limiter>=3.5.0
+gunicorn>=21.0.0
+
+# HTTP client
+aiohttp>=3.9.0
+
+# Environment
+python-dotenv>=1.0.0

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>Multi-Model AI Platform</title>
+    <meta name="description" content="Open-source multi-model AI chat interface supporting OpenAI, Anthropic, Google, xAI, DeepSeek, and Groq.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- Prism.js for Code Highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-logo">
+            <span>AI</span>
+        </div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer">
+
+        <!-- Header -->
+        <header class="app-header" id="appHeader">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menu">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="app-logo">
+                    <i data-lucide="sparkles"></i>
+                    <span>Multi Model AI Platform</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <button class="model-selector-btn" id="modelSelectorBtn" title="Select model">
+                    <span id="currentModelDisplay">Select Model</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon-btn" id="themeToggleBtn" title="Toggle theme" onclick="toggleTheme()">
+                    <i data-lucide="sun" id="themeIcon"></i>
+                </button>
+                <button class="header-icon-btn" id="settingsBtn" title="Settings">
+                    <i data-lucide="settings"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Model Selector Popup -->
+        <div class="model-selector-popup" id="modelSelectorPopup">
+            <div class="model-popup-header">
+                <span>Select Model</span>
+                <button class="model-popup-close" id="modelPopupCloseBtn">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="model-search">
+                <input type="text" id="modelSearchInput" placeholder="Search models...">
+            </div>
+            <div class="model-list" id="modelList">
+                <!-- Models populated by JS -->
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <i data-lucide="plus"></i>
+                    <span>New Chat</span>
+                </button>
+            </div>
+
+            <div class="conversation-list" id="conversationList">
+                <!-- Conversations populated by JS -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="clear-all-btn" id="clearAllBtn" title="Clear all conversations">
+                    <i data-lucide="trash-2"></i>
+                    <span>Clear All</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay (mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Chat Area -->
+        <main class="chat-area" id="chatArea">
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">
+                        <i data-lucide="message-circle"></i>
+                    </div>
+                    <h2>Start a conversation</h2>
+                    <p>Select a model and enter your message below</p>
+                </div>
+            </div>
+
+            <!-- Scroll to bottom button -->
+            <button class="scroll-to-bottom" id="scrollToBottomBtn" style="display: none;">
+                <i data-lucide="chevron-down"></i>
+            </button>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea
+                        id="chatInput"
+                        placeholder="Type your message..."
+                        rows="1"
+                        autofocus
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" title="Send message">
+                        <i data-lucide="send"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-backdrop" onclick="closeSettings()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>API Keys</h3>
+                <button class="modal-close" onclick="closeSettings()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="settings-intro">
+                    Enter your API keys below. Keys are stored locally in your browser and never sent to our servers.
+                </p>
+
+                <div class="api-key-section">
+                    <label for="openaiKey">OpenAI</label>
+                    <input type="password" id="openaiKey" placeholder="sk-..." autocomplete="off">
+                </div>
+
+                <div class="api-key-section">
+                    <label for="anthropicKey">Anthropic</label>
+                    <input type="password" id="anthropicKey" placeholder="sk-ant-..." autocomplete="off">
+                </div>
+
+                <div class="api-key-section">
+                    <label for="googleKey">Google</label>
+                    <input type="password" id="googleKey" placeholder="AI..." autocomplete="off">
+                </div>
+
+                <div class="api-key-section">
+                    <label for="xaiKey">xAI</label>
+                    <input type="password" id="xaiKey" placeholder="xai-..." autocomplete="off">
+                </div>
+
+                <div class="api-key-section">
+                    <label for="deepseekKey">DeepSeek</label>
+                    <input type="password" id="deepseekKey" placeholder="sk-..." autocomplete="off">
+                </div>
+
+                <div class="api-key-section">
+                    <label for="groqKey">Groq</label>
+                    <input type="password" id="groqKey" placeholder="gsk_..." autocomplete="off">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSettings()">Save Keys</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/storage.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+
+    <!-- Initialize Lucide icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
