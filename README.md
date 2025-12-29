@@ -6,14 +6,14 @@ An open-source, lightweight multi-model AI chat interface supporting 6 major AI 
 
 - **Multi-Model Support**: Chat with 35+ models from OpenAI, Anthropic, Google, xAI, DeepSeek, and Groq
 - **Streaming Responses**: Real-time token streaming via Server-Sent Events (SSE)
-- **Browser-Based Storage**: Conversations persist locally using IndexedDB
+- **Conversation History**: Conversations persist locally using IndexedDB
 - **Privacy-First**: API keys stored only in your browser, never sent to the server
-- **Cost Tracking**: Automatic cost calculation for each message based on token usage
 - **Code Highlighting**: Syntax highlighting for code blocks via Prism.js
-- **Mobile-Responsive**: Works great on desktop and mobile devices
+- **Markdown Support**: Basic formatting (bold, italic, code blocks, inline code)
+- **Mobile-Responsive**: Works on desktop and mobile devices
 - **Dark/Light Theme**: Toggle between themes for comfortable viewing
 - **PWA Support**: Install as a standalone app on your device
-- **Rate Limiting**: Built-in protection (30 requests/min per user)
+- **Keyboard Shortcuts**: Quick access to common actions
 
 ## Supported Providers & Models
 
@@ -78,7 +78,7 @@ You'll need API keys from the providers you want to use:
 | DeepSeek | https://platform.deepseek.com/api_keys |
 | Groq | https://console.groq.com/keys |
 
-**Security Note**: API keys are stored locally in your browser using base64 encoding. They are never sent to or stored on the server.
+**Security Note**: API keys are stored locally in your browser. They are never sent to or stored on the server.
 
 ## Deployment
 
@@ -102,11 +102,10 @@ The app is a standard Flask application and can be deployed to:
 ```
 model_platform/
 ├── app.py              # Flask application with API endpoints
-├── config.py           # Model configurations & pricing (35+ models)
+├── config.py           # Model configurations & pricing
 ├── api_clients.py      # Unified API client for all 6 providers
 ├── requirements.txt    # Python dependencies
 ├── Procfile            # Deployment configuration
-├── .env.example        # Example environment variables
 ├── static/
 │   ├── index.html      # Main HTML with settings modal
 │   ├── manifest.json   # PWA manifest
@@ -158,10 +157,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
-
-## Acknowledgments
-
-Built with love using:
-- [Flask](https://flask.palletsprojects.com/)
-- [Lucide Icons](https://lucide.dev/)
-- [Prism.js](https://prismjs.com/)
