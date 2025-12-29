@@ -302,8 +302,8 @@ const Storage = {
      */
     getCurrentModel() {
         return this.getSetting('currentModel', {
-            provider: 'anthropic',
-            model: 'claude-sonnet-4-20250514'
+            provider: 'google',
+            model: 'gemini-3-pro-preview'
         });
     },
 
